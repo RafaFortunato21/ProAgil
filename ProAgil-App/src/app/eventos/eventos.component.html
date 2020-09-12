@@ -3,56 +3,88 @@
 
 
 <div action="" class="form-inline">
-  <div class="form-froup mb-2">
-    Filtro: <input type="text" class="form-control mr-2" 
-    placeholder="buscar"
-    [(ngModel)] = "filtroLista"
-    >
-    
-  </div>
+	<div class="form-froup mb-2">
+		Filtro: <input type="text" class="form-control mr-2" 
+		placeholder="buscar"
+		[(ngModel)] = "filtroLista"
+		>
+		
+	</div>
 </div>
 <h3> <label for="" class="mr-2">Filtro: </label>  {{filtroLista}}</h3>
 <table class="table table-striped">
-  <thead class="thead-light">
-    <tr>
-      <th>
-        <button class="btn btn-outline-primary" (click)="alternarImage()">Mostrar Imagem</button>
-      </th>
-      <th>#</th>
-      <th>Tema</th>
-      <th>Local</th>
-      <th>Data</th>
-      <th>QTdPessoas</th>
-      <th>Lote</th>
-      <th>Opções</th>
-    </tr>
-  </thead>
-  <tbody *ngIf="eventos && eventos.length">
-    <tr  *ngFor="let e of eventosFiltrados">
-      <td>
-        <img *ngIf="mostrarImagem"
-        src="http://localhost:5000/img/{{e.imgUrl}}" alt="" 
-        [style.width.px]="imagemLargura" 
-        [style.margin.px]="imagemMargem">
-      </td>
-      <td>{{e.eventoID}}</td>
-      <td>{{e.tema}}</td>
-      <td>{{e.local}}</td>
-      <td>{{e.dataEvento}}</td>
-      <td>{{e.qtdPessoas}}</td>
-      <td>{{e.lote | uppercase}}</td>
-      
-      <td>
-        <button class="btn btn-success"></button>
-        <button class="btn btn-danger"></button>
-      </td>
-    </tr>
-  </tbody>
-  <tfoot *ngIf="!eventos.length" >
-    <tr>
-      <td colspan="7" class="text-center">
-        <h4>Nenhum Evento Encontrado!</h4>
-      </td>
-    </tr>
-  </tfoot>
+	<thead class="thead-light">
+		<tr>
+			<th>
+				<button class="btn btn-outline-primary" (click)="alternarImage()">
+					
+					<i class="{{mostrarImagem ? 'fa fa-eye-slash' : 'fa fa-eye' }}"></i>
+					
+				</button>
+			</th>
+			<th>#</th>
+			<th>Tema</th>
+			<th>Local</th>
+			<th>Data</th>
+			<th>QTdPessoas</th>
+			<th>Lote</th>
+			<th>Opções</th>
+		</tr>
+	</thead>
+	<tbody *ngIf="eventos && eventos.length">
+		<tr  *ngFor="let e of eventosFiltrados">
+			<td>
+				<img *ngIf="mostrarImagem"
+				src="http://localhost:5000/img/{{e.imagemURL}}" alt="" 
+				[style.width.px]="imagemLargura" 
+				[style.margin.px]="imagemMargem">
+			</td>
+			<td>{{e.id}}</td>
+			<td>{{e.tema}}</td>
+			<td>{{e.local}}</td>
+			<td>{{e.dataEvento | DateTimeFormartPipe}}</td>
+			<td>{{e.qtdPessoas}}</td>
+			<td>
+				<div *ngIf="!e.lotes.length">
+					Não informado
+				</div>
+				<div *ngIf="e.lotes.length">
+					{{e.lotes[0].nome | uppercase}}
+				</div>
+			</td>
+			
+			<td>
+				<div class="btn-group">
+					<button class="btn btn-sm btn-success" 
+						tooltip="Editar" (click)="openModal(template)">
+						<i class="fa fa-edit"></i>
+					</button>
+					<button class="btn btn-sm btn-danger" tooltip="Excluir">
+						<i class="fa fa-eraser"></i>
+					</button>
+				</div>
+				
+			</td>
+		</tr>
+	</tbody>
+	<tfoot *ngIf="!eventos" >
+		<tr>
+			<td colspan="7" class="text-center">
+				<h4>Nenhum Evento Encontrado!</h4>
+			</td>
+		</tr>
+	</tfoot>
 </table>
+
+<ng-template #template>
+	<div class="modal-header">
+		<h4 class="modal-title pull-left">Modal</h4>
+		<button type="button" class="close pull-right" 
+		aria-label="Close" (click)="modalRef.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	This is a modal.
+</div>
+</ng-template>
