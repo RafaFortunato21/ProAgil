@@ -20,8 +20,20 @@ export class EventoService {
     return this.Http.get<Evento[]>(`${this.baseURL}/getByTema/${tema}`);
   }
 
-  getEventoNyId(id: number) : Observable<Evento>{
-    return this.Http.get<Evento>(`${this.baseURL}/getById/${id}`);
+  getEventoById(id: number) : Observable<Evento>{
+    return this.Http.get<Evento>(`${this.baseURL}/${id}`);
+  }
+
+  postEvento(evento: Evento)  {
+    return this.Http.post<Evento>(this.baseURL,evento);
+  }
+
+  putEvento(evento: Evento)  {
+    return this.Http.put<Evento>(`${this.baseURL}/${evento.id}`,evento);
+  }
+
+  deleteEvento(id: number)  {
+    return this.Http.delete<Evento>(`${this.baseURL}/${id}`);
   }
 
 
