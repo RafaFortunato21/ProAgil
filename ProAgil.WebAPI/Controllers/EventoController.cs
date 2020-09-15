@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using ProAgil.Domain;
 using ProAgil.Repository;
 using ProAgil.WebAPI.Dtos;
@@ -23,20 +25,52 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         // GET api/evento
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost("upload")]
+        public async Task<IActionResult> upload()
         {
             try
             {
-                var eventos = await _repo.GetAllEventoAsync(true);
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Resources","Images");
 
-                var results = _mapper.Map<EventoDto[]>(eventos);
-                
-                return Ok(results);
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+                if (file.Length > 0)
+                {
+                    var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
+                    var fullPath = Path.Combine(pathToSave, filename.ToString().Replace("\"", " ").Trim() );
+
+                    using(var stream = new FileStream(fullPath, FileMode.Create)){
+                        file.CopyTo(stream);
+                    }
+                }
+
+                return Ok();
             }
             catch (System.Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de dados falhou {ex.Message}");
+            }
+
+            return BadRequest("Erro ao tentar realizar upload");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+           
+            try
+            {
+                var evento = await _repo.GetAllEventoAsync(true);
+
+                var results = _mapper.Map<EventoDto[]>(evento);
+
+                return Ok(results);
+            }
+            catch (System.Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou");
             }
         }
 
