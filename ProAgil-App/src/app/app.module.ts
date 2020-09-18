@@ -22,9 +22,12 @@ import { ContatosComponent } from './contatos/contatos.component';
 import { TituloComponent  } from './_shared/titulo/titulo.component';
 
 import { DateTimeFormartPipePipe } from './_helps/DateTimeFormartPipe.pipe';
+import { UserComponent } from './user/user.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegistrationComponent } from './user/registration/registration.component';
 
 @NgModule({
-  declarations: [			
+  declarations: [				
       AppComponent,
       NavComponent,
       EventosComponent,
@@ -32,7 +35,10 @@ import { DateTimeFormartPipePipe } from './_helps/DateTimeFormartPipe.pipe';
       DashboardComponent,
       ContatosComponent,
       TituloComponent,
-      DateTimeFormartPipePipe
+      DateTimeFormartPipePipe,
+      UserComponent,
+      LoginComponent,
+      RegistrationComponent
    ],
   imports: [
     BrowserModule,
