@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -25,6 +25,7 @@ import { DateTimeFormartPipePipe } from './_helps/DateTimeFormartPipe.pipe';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegistrationComponent } from './user/registration/registration.component';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
   declarations: [				
@@ -58,7 +59,12 @@ import { RegistrationComponent } from './user/registration/registration.componen
     ReactiveFormsModule
   ],
   providers: [
-    EventoService
+    EventoService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
