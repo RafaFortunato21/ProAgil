@@ -20,9 +20,6 @@ export class NavComponent implements OnInit {
     user: any ;
 
 
-    
-
-
   ngOnInit() {
   }
 
@@ -37,7 +34,11 @@ export class NavComponent implements OnInit {
   }
 
   entrar(){
+    this.router.navigate(['/user/login']);
+  }
 
+  userName(){
+    return sessionStorage.getItem("username");
   }
 
 }

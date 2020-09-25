@@ -203,6 +203,7 @@ export class EventosComponent implements OnInit {
             
             // tslint:disable-next-line: typedef
             getEventos() {
+              this.dataAtual = new Date().getMilliseconds().toString();
               this.eventoService.getAllEventos().subscribe(
                 (_eventos: Evento[]) => {
                   this.eventos = _eventos;
